@@ -43,6 +43,27 @@
   </div>
 
   <script>
+
+    const slides = document.querySelectorAll('.slide-in');
+    function checkSlide(e) {
+      slides.forEach(slide => {
+        // middle of the image (half way distance of the image when scrolling)
+        const slideInAt = (window.scrollY + window.innerHeight) - slide.height/2;
+        // how far is the bottom of the image
+        // offsetTop is the distance between the element and its parent (here = body in html structure)
+        const imageBottom = slide.offsetTop + slide.height;
+        const isHalfShown = slideInAt > slide.offsetTop;
+        const isNotScrolledPast = window.scrollY < imageBottom;
+        if (isHalfShown && isNotScrolledPast) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      })
+    }
+
+
+
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -58,6 +79,8 @@
       };
     }
 
+    window.addEventListener('scroll', debounce(checkSlide));
+
   </script>
 
   <style>
@@ -68,11 +91,11 @@
       font-size: 20px;
       font-weight: 200;
     }
-    
+
     body {
       margin: 0;
     }
-    
+
     *, *:before, *:after {
       box-sizing: inherit;
     }
@@ -107,7 +130,7 @@
     .align-left.slide-in {
       transform: translateX(-30%) scale(0.95);
     }
-    
+
     .align-right.slide-in {
       transform: translateX(30%) scale(0.95);
     }
